@@ -1,0 +1,67 @@
+#1string reverse
+read -p "Enter a string: " str
+length=${#str}
+i=$((length-1))
+while [ $i -ge 0 ]
+do
+    revstr=$revstr${str:$i:1}
+    i=$((i-1))
+done
+echo "Reverse of $str is $revstr"
+
+#2swap two num
+#!/bin/bash
+echo "enter first number"
+read a
+echo "enter second number"
+read b
+echo "a before swapping is $a and b is $b"
+#swapping
+a=$((a+b))
+b=$((a - b))
+a=$((a-b))
+echo "a after swapping is  $a and b is $b"
+
+#3reverse a number
+echo enter n
+read n
+num=0
+while [ $n -gt 0 ]
+do
+num=$(expr $num \* 10)
+k=$(expr $n % 10)
+num=$(expr $num + $k)
+n=$(expr $n / 10)
+done
+echo number is $num
+
+#4leap year
+echo "enter the year :"
+read y
+a=`expr $y % 4`
+b=`expr $y % 100`
+c=`expr $y % 400`
+# -eq is for equal to
+#-ne is for not equal to  
+if [ $a -eq 0 -a $b -ne 0 -o $c -eq 0 ]
+then
+echo "$y is leap year"
+else
+echo "$y is not leap year"
+fi
+
+#5avg of array/num
+echo "Enter Size(N)"
+read N
+i=1
+sum=0
+echo "Enter Numbers"
+while [ $i -le $N ]
+do
+  read num               
+  sum=$((sum + num))     
+  i=$((i + 1))
+done
+avg=$(echo $sum / $N | bc -l)
+echo $avg
+
