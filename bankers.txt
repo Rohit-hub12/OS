@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int allocation[100][100] , need[100][100] ;
+int find_the_row(int n, int m,int arr[],int completed[])
+{
+     int ans=-1 ; 
+     for(int i = 0;i < n ; i++ ) 
+     {
+          if(completed[i] != 1 )
+          {
+            int j;
+            for( j = 0 ; j<m;j++ ) 
+             {
+               if(arr[j] < need[i][j]) 
+                  break ; 
+             }
+             if(j==m) 
+            {
+                ans = i ;
+                return ans; 
+            }
+          }        
+     }
+     return ans; 
+}
+int isCompleted(int arr[] ,int m ) 
+{
+    int temp = 0 ;
+    for(int i = 0 ; i<m;i++ ) 
+    {
+        if(arr[i] == 1 ) temp++ ;         
+    }    
+    if(temp==m) return 1;
+    return 0 ;
+}
+int main()
+{
+    int n ,m; 
+    printf("Enter the number of Process and Resource\n"); 
+    scanf("%d%d",&n,&m);
+    for(int i = 0 ; i < n ; i++ ) 
+    {
+      printf("Enter the Allocation Process P%d\n",i);
+      for(int j = 0 ; j< m ;j++ )   
+      scanf("%d",&allocation[i][j]);       
+    }
+    for(int i = 0 ; i < n ; i++ ) 
+    {
+        printf("Enter the Max Process P%d\n",i);
+		  for(int j = 0 ; j< m ;j++ ){
+		  int x ; 
+		  scanf("%d",&x);
+		  need[i][j] = x - allocation[i][j] ;
+      }
+    }   
+    printf("Need Matrix::\n");
+    for(int i = 0 ; i < n ; i++ ) 
+    {
+      for(int j = 0 ; j< m ;j++ )
+        printf("%d ",need[i][j]); 
+      printf("\n");
+    }      
+    int arr[m] ; 
+    printf("Enter Available Resources\n");
+    for(int  i = 0 ;i < m ;i++ ) 
+    scanf("%d",&arr[i]);  
+    int completed[n] ;
+    memset(completed,0,sizeof(completed));    
+    int i = 0;
+    printf("Process Sequence in Order :: \n");
+    while(1){
+    for( i = 0 ; i < n; i++ ) 
+    {
+       if(completed[i] == 0 )
+       {
+          int j ; 
+          for( j = 0 ; j < m ; j++ ) 
+          {
+             if(arr[j] < need[i][j] ) break;           
+          }
+          if(j==m) 
+          {
+             completed[i] = 1;
+             for(int k = 0 ;k<m;k++)
+             arr[k] +=allocation[i][k];
+             printf("P%d ",i);
+          }
+          
+       } 
+     }
+     printf("\n");
+     if(isCompleted(completed,n) == 1 ) break;
+     i=0;
+   }     
+}
+

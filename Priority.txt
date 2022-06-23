@@ -1,0 +1,117 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<limits.h>
+struct process{
+	int pid;
+	int at;
+	int bt;
+	int ct,tat,rt,wt,start_time;
+	int priority;
+	
+}ps[100];
+int main()
+{
+	int n;
+	int completed = 0;
+	int current_time = 0;
+	bool is_completed[100]={false};
+	float sum_tat=0,sum_rt = 0,sum_wt=0;
+	
+	
+	printf("Enter the Number of process:-");
+	scanf("%d",&n);
+	
+	for(int i = 0;i<n;i++)
+	{
+		printf("Enter the process %d Number:-",i+1);
+		scanf("%d",&ps[i].pid);
+		
+	
+	}
+	
+	for(int i = 0;i<n;i++)
+	{
+		printf("Enter the process %d Arrival Time:-",i+1);
+		scanf("%d",&ps[i].at);
+		
+	
+	}
+
+	for(int i = 0;i<n;i++)
+	{
+		printf("Enter the process %d Brust Time:-",i+1);
+		scanf("%d",&ps[i].bt);
+	}
+
+	for(int i = 0;i<n;i++)
+	{
+		printf("Enter the priority %d Number:-",i+1);
+		scanf("%d",&ps[i].priority);
+	}
+	while(completed!=n)
+	{
+	
+		int idex = -1;
+		int maximum = INT_MAX;
+		for(int i = 0;i<n;i++)
+		{
+			if(ps[i].at<=current_time && is_completed[i]==false)
+			{
+		
+				if(ps[i].priority<maximum)
+				{
+					maximum = ps[i].priority;
+					idex =i;
+				}
+			
+			
+				if(ps[i].priority == maximum)
+				{
+					if(ps[i].at<ps[idex].at)
+					{
+						maximum =ps[i].priority;
+						idex =i;
+					
+					}
+				}
+			}
+		}
+		
+		if(idex == -1)
+		{
+			current_time++;
+		
+		}
+		else
+		{
+	
+			ps[idex].start_time = current_time;
+			ps[idex].ct = ps[idex].start_time+ps[idex].bt;
+			ps[idex].tat = ps[idex].ct -ps[idex].at;
+			ps[idex].wt =ps[idex].tat-ps[idex].bt;
+			ps[idex].rt = ps[idex].wt;
+		
+			sum_tat+=ps[idex].tat;
+			sum_wt+=ps[idex].wt ;
+			sum_rt+=ps[idex].rt;
+		
+			completed=completed+1;
+			 is_completed[idex] = true;
+			 current_time = ps[idex].ct;
+		}	
+	}
+	
+// output
+printf("Process\tAt\tBt\tTAT\tWt\tPRIORITY\n");
+for(int i = 0;i<n;i++)
+{
+
+	printf("%d\t%d\t%d\t%d\t%d\t%d\n",ps[i].pid,ps[i].at,ps[i].bt,ps[i].tat,ps[i].wt,ps[i].priority);
+}
+
+printf("\n");
+
+printf("\nAverage Turn Around Time is: %.2f\n",(float)sum_tat/n);
+printf("\nAverage Waiting Time is: %.2f\n",(float)sum_wt/n);
+return 0;
+}
